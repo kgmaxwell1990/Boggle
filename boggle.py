@@ -46,24 +46,29 @@ def get_dictionary(dictionary_file):
         return {w.strip().upper() for w in f}
 
 
-def main():
-    grid = make_grid(3, 3)
-    dictionary = get_dictionary('words.txt')
-    words = search(grid, dictionary)
-
-    print("----------")
-    print(grid[0,0], "|", grid[0,1], "|", grid[0,2])
-    print("----------")
-    print(grid[1,0], "|", grid[1,1], "|", grid[1,2])
-    print("----------")
-    print(grid[2,0], "|", grid[2,1], "|", grid[2,2])
-    print("----------")
-
+def display_words(words):
     for word in words:
         print(word)
-
     print("Found {0} words".format(len(words)))
 
 
+def display_grid(grid, rows, cols):
+    for r in range(rows):
+        letters_this_row = []
+        for c in range(cols):
+            letters_this_row.append(grid[r, c])
+        this_row_as_text = "|".join(letters_this_row)
+        print(this_row_as_text)
 
-main()
+
+def main(row, col):
+    dictionary = get_dictionary('words.txt')
+    grid = make_grid(row, col)
+    display_grid(grid, row, col)
+    words = search(grid, dictionary)
+    display_words(words)
+    
+
+
+main(4, 4)
+
