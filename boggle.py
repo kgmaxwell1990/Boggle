@@ -21,3 +21,36 @@ def all_grid_neighbours(grid):
 
 def path_to_word(grid, path):
     return ''.join([grid[p] for p in path])
+
+def search(grid, dictionary):
+    neighbours = all_grid_neighbours(grid)
+    paths = []
+    def do_search(path):
+        word = path_to_word(grid, path)
+        if word in dictionary:
+            paths.append(path)
+        for next_pos in neighbours[path[-1]]:
+            if next_pos not in path:
+                do_search(path + [next_pos])
+    for position in grid:
+        do_search([position])
+    
+    words = []
+    for path in paths:
+        words.append(path_to_word(grid, path))
+    return set(words)
+
+def get_dictionary(dictionary_file):
+    with open(dictionary_file) as f:
+        return [w.strip().upper() for w in f]
+
+
+def main():
+    grid = make_grid(3, 3)
+    dictionary = get_dictionary('/usr/share/dict/words')
+    words = search(grid, dictionary)
+    for word in words:
+        print(word)
+    print("Found {0} words".format(len(words)))
+
+main()
