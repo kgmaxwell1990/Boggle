@@ -6,6 +6,7 @@ def make_grid(height, width):
                      for row in range(height)
                      for col in range(width)}
 
+
 def neighbours_of_position(row,col):
     return [ (row - 1, col - 1), (row -1, col), (row - 1, col + 1), 
               (row, col - 1),                       (row, col + 1),
@@ -42,15 +43,27 @@ def search(grid, dictionary):
 
 def get_dictionary(dictionary_file):
     with open(dictionary_file) as f:
-        return [w.strip().upper() for w in f]
+        return {w.strip().upper() for w in f}
 
 
 def main():
     grid = make_grid(3, 3)
-    dictionary = get_dictionary('/usr/share/dict/words')
+    dictionary = get_dictionary('words.txt')
     words = search(grid, dictionary)
+
+    print("----------")
+    print(grid[0,0], "|", grid[0,1], "|", grid[0,2])
+    print("----------")
+    print(grid[1,0], "|", grid[1,1], "|", grid[1,2])
+    print("----------")
+    print(grid[2,0], "|", grid[2,1], "|", grid[2,2])
+    print("----------")
+
     for word in words:
         print(word)
+
     print("Found {0} words".format(len(words)))
+
+
 
 main()
