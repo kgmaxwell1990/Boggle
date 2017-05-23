@@ -26,8 +26,14 @@ def path_to_word(grid, path):
 def search(grid, dictionary):
     neighbours = all_grid_neighbours(grid)
     paths = []
+    full_words, stems = dictionary
+
     def do_search(path):
         word = path_to_word(grid, path)
+        if word in full_words:
+            paths.append(path)
+        if word not in stems:
+            return
         if word in dictionary:
             paths.append(path)
         for next_pos in neighbours[path[-1]]:
@@ -42,8 +48,16 @@ def search(grid, dictionary):
     return set(words)
 
 def get_dictionary(dictionary_file):
+    full_words, stems = set(), set()
+
     with open(dictionary_file) as f:
-        return {w.strip().upper() for w in f}
+        for word in f:
+            word = word.strip().upper()
+            full_words.add(word)
+
+            for i in range(1, len(word)):
+                stems.add(word[:i])
+        return full_words, stems
 
 
 def display_words(words):
@@ -70,5 +84,5 @@ def main(row, col):
     
 
 
-main(4, 4)
+main(50, 50)
 
